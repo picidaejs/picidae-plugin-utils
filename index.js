@@ -3,18 +3,19 @@ function generateUtils({data, location}) {
     return {
         group(name, opt = {}) {
             const {
-                isDesc = true
+                isDesc = true,
+                split = true
             } = opt;
             // name = map[name] || name;
             let group = []
             for (let k in data.meta) {
-                if (new RegExp('^' + name + (name.endsWith('/') ? '' : '\/')).test(k)) {
+                if (new RegExp('^' + name + (name.endsWith('/') ? '' : (split ? '\/' : '') )).test(k)) {
                     group.push(Object.assign({}, data.meta[k], {_key: k}))
                 }
             }
             return group.sort((a, b) =>
-                isDesc ? new Date(a.datetime) < new Date(b.datetime)
-                    : new Date(a.datetime) > new Date(b.datetime)
+                isDesc ? new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+                    : new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
             )
         },
         pagination(name, opt) {
