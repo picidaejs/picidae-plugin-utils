@@ -19,7 +19,7 @@ function generateUtils({data, location}) {
             )
         },
         pagination(name, opt) {
-            let key = location.pathname;
+            let key = decodeURIComponent(location.pathname);
             let group = this.group(name, opt);
             let i = group.findIndex(x => x._key === key);
             return {
